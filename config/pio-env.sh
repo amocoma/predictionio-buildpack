@@ -98,6 +98,13 @@ else
     PIO_STORAGE_SOURCES_PGSQL_PASSWORD=$pass
 fi
 
+echo "******************************************************"
+echo "** DATABASE_URL: $DATABASE_URL"
+echo "** PIO_STORAGE_SOURCES_ELASTICSEARCH_CLUSTERNAME: $PIO_STORAGE_SOURCES_PGSQL_URL"
+echo "** PIO_STORAGE_SOURCES_ELASTICSEARCH_HOSTS $PIO_STORAGE_SOURCES_PGSQL_USERNAME"
+echo "** PIO_STORAGE_SOURCES_ELASTICSEARCH_PORTS $PIO_STORAGE_SOURCES_PGSQL_PASSWORD"
+echo "******************************************************"
+
 # Elasticsearch Example
 # FOUNDELASTICSEARCH_URL:     https://subdomain.us-east-1.aws.found.io
 PIO_STORAGE_SOURCES_ELASTICSEARCH_TYPE=elasticsearch
