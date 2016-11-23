@@ -36,6 +36,8 @@ PIO_FS_BASEDIR=$HOME/.pio_store
 PIO_FS_ENGINESDIR=$PIO_FS_BASEDIR/engines
 PIO_FS_TMPDIR=$PIO_FS_BASEDIR/tmp
 
+env
+
 # PredictionIO Storage Configuration
 #
 # This section controls programs that make use of PredictionIO's built-in
