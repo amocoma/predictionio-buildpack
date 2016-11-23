@@ -1,4 +1,4 @@
-# PredictionIO classification app
+# PredictionIO template
 
 Predictive classification powered by [PredictionIO](https://predictionio.incubator.apache.org), machine learning on [Heroku](http://www.heroku.com).
 
