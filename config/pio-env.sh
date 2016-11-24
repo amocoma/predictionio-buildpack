@@ -28,6 +28,7 @@ PIO_FS_TMPDIR=$PIO_FS_BASEDIR/tmp
 if [ -z "$ENGINE_CONF_DIR" ]; then
   export PIO_ENV_LOADED=1
 else
+  cat ${ENGINE_CONF_DIR}/pio-engine-env.sh
   if [ -f "${ENGINE_CONF_DIR}/pio-engine-env.sh" ]; then
     # Promote all variable declarations to environment (exported) variables
     set -a
