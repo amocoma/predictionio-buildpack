@@ -14,7 +14,11 @@ SPARK_LOCAL_IP="${HEROKU_PRIVATE_IP:-}"
 SPARK_PUBLIC_DNS="${HEROKU_DNS_DYNO_NAME:-}"
 
 # ENGINE_CONF_DIR: to set the configuration directory of the engine
-set ENGINE_CONF_DIR=$BUILD_DIR/engine-conf
+ENGINE_CONF_DIR=$BUILD_DIR/engine-conf
+
+echo "******************************************************"
+echo "** ENGINE_CONF_DIR: $ENGINE_CONF_DIR"
+echo "******************************************************"
 
 PIO_FS_BASEDIR=$HOME/.pio_store
 PIO_FS_ENGINESDIR=$PIO_FS_BASEDIR/engines
