@@ -134,6 +134,8 @@ source .profile.d/pio-path.sh
 
 if [ -f "${BUILD_DIR}/engine.json" ]
 then
+  ls -laR $BUILD_DIR
+
   topic "Build PredictionIO engine"
   # Move to dyno-compatible prefix for `pio build`
   mv $BUILD_DIR/* $app_prefix
