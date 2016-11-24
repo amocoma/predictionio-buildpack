@@ -117,7 +117,7 @@ topic "Configure PredictionIO"
 if [ -f "${custom_pio_env}" ]
 then
   echo "Using custom 'config/pio-env.sh'" | indent
-  cat "${default_pio_env}" "${custom_pio_env}" > ${target_pio_env}" | indent
+  cat "${default_pio_env}" "${custom_pio_env}" > "${target_pio_env}" | indent
   #cp "${custom_pio_env}" "${target_pio_env}" | indent
 else
   echo "Writing default 'pio-env.sh'" | indent
