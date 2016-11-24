@@ -18,6 +18,7 @@ ENGINE_CONF_DIR=$BUILD_DIR/engine-conf
 
 echo "******************************************************"
 echo "** BUILD_DIR: $BUILD_DIR**"
+ls -la $BUILD_DIR
 echo "** ENGINE_CONF_DIR: $ENGINE_CONF_DIR"
 echo "******************************************************"
 
