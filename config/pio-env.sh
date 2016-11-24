@@ -112,6 +112,7 @@ export PIO_STORAGE_SOURCES_ELASTICSEARCH_TYPE=elasticsearch
 export PIO_STORAGE_SOURCES_ELASTICSEARCH_HOME=$PIO_HOME/vendors/elasticsearch-1.4.4
 echo "******************************************************"
 echo "**: $PIO_STORAGE_SOURCES_ELASTICSEARCH_HOME"
+ls -laR $PIO_STORAGE_SOURCES_ELASTICSEARCH_HOME/
 cat $PIO_STORAGE_SOURCES_ELASTICSEARCH_HOME/config/elasticsearch.yml
 echo "******************************************************"
 
