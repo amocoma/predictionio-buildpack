@@ -25,17 +25,3 @@ echo "******************************************************"
 PIO_FS_BASEDIR=$HOME/.pio_store
 PIO_FS_ENGINESDIR=$PIO_FS_BASEDIR/engines
 PIO_FS_TMPDIR=$PIO_FS_BASEDIR/tmp
-
-if [ -z "$ENGINE_CONF_DIR" ]; then
-  export PIO_ENV_LOADED=1
-else
-  cat ${ENGINE_CONF_DIR}/pio-engine-env.sh
-  if [ -f "${ENGINE_CONF_DIR}/pio-engine-env.sh" ]; then
-    # Promote all variable declarations to environment (exported) variables
-    set -a
-    . "${ENGINE_CONF_DIR}/pio-engine-env.sh"
-    set +a
-  else
-    echo -e "\033[0;35mWarning: pio-engine-env.sh was not found in ${ENGINE_CONF_DIR}. Using system environment variables instead.\033[0m\n"
-  fi
-fi
