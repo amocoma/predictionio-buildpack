@@ -106,6 +106,10 @@ echo "** PIO_STORAGE_SOURCES_ELASTICSEARCH_HOSTS $PIO_STORAGE_SOURCES_PGSQL_USER
 echo "** PIO_STORAGE_SOURCES_ELASTICSEARCH_PORTS $PIO_STORAGE_SOURCES_PGSQL_PASSWORD"
 echo "******************************************************"
 
+echo "******************************************************"
+ls -la $PIO_HOME
+echo "******************************************************"
+
 # Elasticsearch Example
 # FOUNDELASTICSEARCH_URL:     https://subdomain.us-east-1.aws.found.io
 export PIO_STORAGE_SOURCES_ELASTICSEARCH_TYPE=elasticsearch
