@@ -109,6 +109,7 @@ echo "******************************************************"
 # Elasticsearch Example
 # FOUNDELASTICSEARCH_URL:     https://subdomain.us-east-1.aws.found.io
 PIO_STORAGE_SOURCES_ELASTICSEARCH_TYPE=elasticsearch
+PIO_STORAGE_SOURCES_ELASTICSEARCH_HOME=$PIO_HOME/vendors/elasticsearch-1.4.4
 if [ -z "${FOUNDELASTICSEARCH_URL}" ]; then
   PIO_STORAGE_SOURCES_ELASTICSEARCH_CLUSTERNAME=elasticsearch
   PIO_STORAGE_SOURCES_ELASTICSEARCH_HOSTS=localhost
@@ -126,7 +127,6 @@ else
     PIO_STORAGE_SOURCES_ELASTICSEARCH_CLUSTERNAME=a534131550e4521c4fe09519383afdb0
     PIO_STORAGE_SOURCES_ELASTICSEARCH_HOSTS=a534131550e4521c4fe09519383afdb0.us-east-1.aws.found.io
     PIO_STORAGE_SOURCES_ELASTICSEARCH_PORTS=9200
-    PIO_STORAGE_SOURCES_ELASTICSEARCH_HOME=~/elasticsearch/
 fi
 
 echo "******************************************************"
