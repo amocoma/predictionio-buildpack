@@ -17,6 +17,7 @@ SPARK_PUBLIC_DNS="${HEROKU_DNS_DYNO_NAME:-}"
 ENGINE_CONF_DIR=$BUILD_DIR/engine-conf
 
 echo "******************************************************"
+echo "** BUILD_DIR: $BUILD_DIR**"
 echo "** ENGINE_CONF_DIR: $ENGINE_CONF_DIR"
 echo "******************************************************"
 
