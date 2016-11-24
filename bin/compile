@@ -125,7 +125,7 @@ else
 fi
 cp "$BP_DIR/config/core-site.xml.erb" "$dist_dir/conf/"
 
-if [ -d "$BUILD_DIR/config"] && [-d "$BUILD_DIR/config/other"];
+if [ -d "$BUILD_DIR/config" ] && [ -d "$BUILD_DIR/config/other" ];
 then
   cp -R "$BUILD_DIR/config/other/*" "$dist_dir/conf/"
 fi
