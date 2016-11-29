@@ -113,6 +113,14 @@ curl -o "spark-hadoop.tar.gz" -S "http://marsikai.s3.amazonaws.com/${SPARK_VERSI
 mkdir -p "$dist_dir/vendors/spark-hadoop"
 tar -xz -f "spark-hadoop.tar.gz" -C "$dist_dir/vendors/spark-hadoop" --strip-components=1  | indent
 
+### Test installing elasticsearch-5.0.1 ###
+topic "<ME> Installing elasticsearch-5.0.1"
+ELASTICSEARCH_VERSION=5.0.1
+curl -O https://artifacts.elastic.co/downloads/elasticsearch/elasticsearch-${ELASTICSEARCH_VERSION}.tar.gz \
+    && tar -xvzf elasticsearch-${ELASTICSEARCH_VERSION}.tar.gz -C $dist_dir/vendors \
+    && rm elasticsearch-${ELASTICSEARCH_VERSION}.tar.gz
+### End ###
+
 topic "Configure PredictionIO"
 if [ -f "${custom_pio_env}" ]
 then
