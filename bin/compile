@@ -56,35 +56,37 @@ export_env_dir() {
 }
 
 # parse and derive params
-export BUILD_DIR=${1:-}
+BUILD_DIR=${1:-}
 CACHE_DIR=${2:-}
 ENV_DIR=${3:-}
 BP_DIR=$(cd $(dirname ${0:-}); cd ..; pwd)
 
 
+export_env_dir "$ENV_DIR" '^PREDICTIONIO_DIST_URL$'
 export_env_dir "$ENV_DIR" '^PIO_BUILD_SPARK_VERSION$'
 SPARK_VERSION="spark-${PIO_BUILD_SPARK_VERSION:-1.6.2}-bin-hadoop2.6"
+POSTGRESQL_DRIVER=https://marsikai.s3.amazonaws.com/postgresql-9.4.1209.jar
 
-if [ $(requires_apache_predictionio "$BUILD_DIR/template.json") ]
+if [ "${PREDICTIONIO_DIST_URL:-}" ]
+then
+  PIO_VERSION=custom-distribution
+  echo "Using PredictionIO distribution at ${PREDICTIONIO_DIST_URL}" | indent
+elif [ $(requires_apache_predictionio "$BUILD_DIR/template.json") ]
 then
   PIO_VERSION=0.10.0-incubating
-  # No special PostgreSQL driver is required
-  POSTGRESQL_DRIVER=''
   echo "Using Apache PredictionIO ${PIO_VERSION}" | indent
 else
   mkdir -p "$BUILD_DIR/.heroku"
   echo '# Presence of this file indicates a pre-Apache engine (<= 0.9)' > "$BUILD_DIR/.heroku/.is_old_predictionio"
   PIO_VERSION=0.9.5
-  POSTGRESQL_DRIVER=postgresql-9.4.1209.jar
   echo "Using PredictionIO $PIO_VERSION" | indent
 fi
 
 PIO_BUILD=PredictionIO-${PIO_VERSION}
 
 
-# PredictionIO dist tarball URL, expects `.tar.gz` 
+# PredictionIO dist tarball URL, expects `.tar.gz`
 default_url="https://marsikai.s3.amazonaws.com/${PIO_BUILD}.tar.gz"
-export_env_dir "$ENV_DIR" '^PREDICTIONIO_DIST_URL$'
 url="${PREDICTIONIO_DIST_URL-$default_url}"
 
 # The PATH set in .profile.d/pio-env.sh must match.
@@ -109,42 +111,33 @@ mkdir -p "$dist_dir"
 tar -xz -f "${dist_name}.tar.gz" -C "$dist_dir" --strip-components=1 | indent
 
 topic "Fetch distribution of Spark"
-curl -o "spark-hadoop.tar.gz" -S "http://marsikai.s3.amazonaws.com/${SPARK_VERSION}.tar.gz"
+curl -o "spark-hadoop.tar.gz" -S "https://marsikai.s3.amazonaws.com/${SPARK_VERSION}.tar.gz"
 mkdir -p "$dist_dir/vendors/spark-hadoop"
 tar -xz -f "spark-hadoop.tar.gz" -C "$dist_dir/vendors/spark-hadoop" --strip-components=1  | indent
 
-### Test installing elasticsearch-5.0.1 ###
-topic "<ME> Installing elasticsearch-5.0.1"
-ELASTICSEARCH_VERSION=5.0.1
-curl -O https://artifacts.elastic.co/downloads/elasticsearch/elasticsearch-${ELASTICSEARCH_VERSION}.tar.gz \
-    && tar -xvzf elasticsearch-${ELASTICSEARCH_VERSION}.tar.gz -C $dist_dir/vendors \
-    && rm elasticsearch-${ELASTICSEARCH_VERSION}.tar.gz
-### End ###
+topic "Fetch distribution of Elasticsearch"
+curl -o "elasticsearch-${ELASTICSEARCH_VERSION}.tar.gz" -S "https://download.elastic.co/elasticsearch/release/org/elasticsearch/distribution/tar/elasticsearch/${ELASTICSEARCH_VERSION}/elasticsearch-${ELASTICSEARCH_VERSION}.tar.gz"
+mkdir -p "$dist_dir/vendors/elasticsearch-${ELASTICSEARCH_VERSION}"
+tar -xz -f "elasticsearch-${ELASTICSEARCH_VERSION}.tar.gz" -C "$dist_dir/vendors/elasticsearch-${ELASTICSEARCH_VERSION}" --strip-components=1  | indent
+echo 'cluster.name: ${ELASTICSEARCH_CLUSTERNAME}' >> ${PIO_HOME}/vendors/elasticsearch-${ELASTICSEARCH_VERSION}/config/elasticsearch.yml
+echo 'network.host: ${ELASTICSEARCH_NETWORK_HOST}' >> ${PIO_HOME}/vendors/elasticsearch-${ELASTICSEARCH_VERSION}/config/elasticsearch.yml
 
 topic "Configure PredictionIO"
 if [ -f "${custom_pio_env}" ]
 then
   echo "Using custom 'config/pio-env.sh'" | indent
-  cat "${default_pio_env}" "${custom_pio_env}" > "${target_pio_env}" | indent
-  #cp "${custom_pio_env}" "${target_pio_env}" | indent
+  cp "${custom_pio_env}" "${target_pio_env}" | indent
 else
   echo "Writing default 'pio-env.sh'" | indent
   cp "${default_pio_env}" "${target_pio_env}" | indent
 fi
 cp "$BP_DIR/config/core-site.xml.erb" "$dist_dir/conf/"
 
-if [ -d "$BUILD_DIR/config" ] && [ -d "$BUILD_DIR/config/other" ];
-then
-  cp -R "$BUILD_DIR/config/other/" "$dist_dir/conf/"
-fi
-
-
 topic "Set-up PredictionIO environment"
 mkdir -p "$BUILD_DIR/.profile.d"
 cp -r .profile.d/* "$BUILD_DIR/.profile.d/" | indent
 # Load the env for the following build steps
 export_env_dir "$ENV_DIR" '^DATABASE_URL$'
-export_env_dir "$ENV_DIR" '^FOUNDELASTICSEARCH_URL$'
 source .profile.d/pio-path.sh
 
 if [ -f "${BUILD_DIR}/engine.json" ]
@@ -165,14 +158,20 @@ then
   topic "Moving build artifacts into place"
   # After PIO build at the runtime prefix, move the engine into the slug
   mv $app_prefix $BUILD_DIR
-  # Move the Procfile back to the top-level app directory or use default for engines
+  # Move the Procfile(s) back to the top-level app directory or use default for engines
   # (`bin/release` default_process_types have no effect since this is never the last buildpack)
   if [ -f "${BUILD_DIR}/${app_namespace}/Procfile" ]
   then
-    mv "${BUILD_DIR}/${app_namespace}/Procfile" $BUILD_DIR
+    mv $BUILD_DIR/$app_namespace/Procfile* $BUILD_DIR
   else
     mv "${BP_DIR}/Procfile-engine" "${BUILD_DIR}/Procfile"
   fi
+
+  topic "Moving engine's bin/ & conf/ into place"
+  mkdir -p $BUILD_DIR/$app_namespace/bin
+  mv $BUILD_DIR/$app_namespace/bin $BUILD_DIR/
+  mkdir -p $BUILD_DIR/$app_namespace/conf
+  mv $BUILD_DIR/$app_namespace/conf $BUILD_DIR/
 
   topic "Set-up train on release (disable with PIO_TRAIN_ON_RELEASE=false)"
   mkdir -p "$BUILD_DIR/bin"
@@ -186,5 +185,5 @@ if [ "$POSTGRESQL_DRIVER" ]
 then
   topic "Install PostgreSQL database driver"
   mkdir -p "${BUILD_DIR}/lib"
-  curl -s -L "https://marsikai.s3.amazonaws.com/$POSTGRESQL_DRIVER" > "${BUILD_DIR}/lib/postgresql_jdbc.jar"
+  curl -s -L "$POSTGRESQL_DRIVER" > "${BUILD_DIR}/lib/postgresql_jdbc.jar"
 fi
