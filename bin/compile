@@ -65,7 +65,7 @@ BP_DIR=$(cd $(dirname ${0:-}); cd ..; pwd)
 export_env_dir "$ENV_DIR" '^PREDICTIONIO_DIST_URL$'
 export_env_dir "$ENV_DIR" '^PIO_BUILD_SPARK_VERSION$'
 SPARK_VERSION="spark-${PIO_BUILD_SPARK_VERSION:-1.6.2}-bin-hadoop2.6"
-ELASTICSEARCH_VERSION="1.7.6"
+ELASTICSEARCH_VERSION = "1.7.6"
 
 POSTGRESQL_DRIVER=https://marsikai.s3.amazonaws.com/postgresql-9.4.1209.jar
 
@@ -118,7 +118,8 @@ mkdir -p "$dist_dir/vendors/spark-hadoop"
 tar -xz -f "spark-hadoop.tar.gz" -C "$dist_dir/vendors/spark-hadoop" --strip-components=1  | indent
 
 topic "Fetch distribution of Elasticsearch"
-curl -o "elasticsearch-${ELASTICSEARCH_VERSION}.tar.gz" -S "https://download.elastic.co/elasticsearch/release/org/elasticsearch/distribution/tar/elasticsearch/${ELASTICSEARCH_VERSION}/elasticsearch-${ELASTICSEARCH_VERSION}.tar.gz"
+curl -o "elasticsearch-${ELASTICSEARCH_VERSION}.tar.gz" -S "https://download.elastic.co/elasticsearch/elasticsearch/elasticsearch-${ELASTICSEARCH_VERSION}.tar.gz"
+
 mkdir -p "$dist_dir/vendors/elasticsearch-${ELASTICSEARCH_VERSION}"
 tar -xz -f "elasticsearch-${ELASTICSEARCH_VERSION}.tar.gz" -C "$dist_dir/vendors/elasticsearch-${ELASTICSEARCH_VERSION}" --strip-components=1  | indent
 # echo 'cluster.name: ${ELASTICSEARCH_CLUSTERNAME}' >> ${PIO_HOME}/vendors/elasticsearch-${ELASTICSEARCH_VERSION}/config/elasticsearch.yml
