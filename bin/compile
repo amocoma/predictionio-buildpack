@@ -121,7 +121,7 @@ topic "Fetch distribution of Elasticsearch"
 curl -o "elasticsearch-${ELASTICSEARCH_VERSION}.tar.gz" -S "https://download.elastic.co/elasticsearch/elasticsearch/elasticsearch-${ELASTICSEARCH_VERSION}.tar.gz"
 mkdir -p "$dist_dir/vendors/elasticsearch-${ELASTICSEARCH_VERSION}"
 tar -xz -f "elasticsearch-${ELASTICSEARCH_VERSION}.tar.gz" -C "$dist_dir/vendors/elasticsearch-${ELASTICSEARCH_VERSION}" --strip-components=1  | indent
-ls "$dist_dir/vendors/"
+ls "$dist_dir/vendors/elasticsearch-${ELASTICSEARCH_VERSION}.tar.gz"
 echo 'cluster.name: 6d09461a72125d0fc9d6cd817015142c' >> "$dist_dir/vendors/elasticsearch-${ELASTICSEARCH_VERSION}/config/elasticsearch.yml
 echo 'network.host: 6d09461a72125d0fc9d6cd817015142c.eu-west-1.aws.found.io' >> "$dist_dir/vendors/elasticsearch-${ELASTICSEARCH_VERSION}/config/elasticsearch.yml
 
