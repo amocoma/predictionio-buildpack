@@ -126,7 +126,7 @@ echo 'cluster.name: 6d09461a72125d0fc9d6cd817015142c' >> "$dist_dir/vendors/elas
 # echo 'network.host: 6d09461a72125d0fc9d6cd817015142c.eu-west-1.aws.found.io' >> "$dist_dir/vendors/elasticsearch-${ELASTICSEARCH_VERSION}/config/elasticsearch.yml"
 echo 'network.host: _global_' >> "$dist_dir/vendors/elasticsearch-${ELASTICSEARCH_VERSION}/config/elasticsearch.yml"
 echo 'transport.tcp.port: 9300' >> "$dist_dir/vendors/elasticsearch-${ELASTICSEARCH_VERSION}/config/elasticsearch.yml"
-echo 'discovery.zen.ping.unicast.hosts: 6d09461a72125d0fc9d6cd817015142c.eu-west-1.aws.found.io" >> "$dist_dir/vendors/elasticsearch-${ELASTICSEARCH_VERSION}/config/elasticsearch.yml"
+echo 'discovery.zen.ping.unicast.hosts: 6d09461a72125d0fc9d6cd817015142c.eu-west-1.aws.found.io' >> "$dist_dir/vendors/elasticsearch-${ELASTICSEARCH_VERSION}/config/elasticsearch.yml"
 
 
 topic "Configure PredictionIO"
