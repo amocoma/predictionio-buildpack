@@ -110,6 +110,8 @@ target_pio_env="${dist_dir}/conf/pio-env.sh"
 topic "Fetch distribution of PredictionIO"
 curl -o "${dist_name}.tar.gz" -S "$url"
 mkdir -p "$dist_dir"
+echo "$dist_dir"
+ls -la
 tar -xz -f "${dist_name}.tar.gz" -C "$dist_dir" --strip-components=1 | indent
 ls -la
 topic "Fetch distribution of Spark"
