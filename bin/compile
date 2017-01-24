@@ -112,7 +112,8 @@ curl -o "${dist_name}.tar.gz" -S "$url"
 mkdir -p "$dist_dir"
 echo "$dist_dir"
 ls -la "$dist_dir"
-tar -xz -f "${dist_name}.tar.gz" -C "$dist_dir" --strip-components=1 | indent
+tar -xz -f "${dist_name}.tar.gz" -C "$dist_dir" 
+#--strip-components=1 | indent
 ls -la
 topic "Fetch distribution of Spark"
 curl -o "spark-hadoop.tar.gz" -S "https://marsikai.s3.amazonaws.com/${SPARK_VERSION}.tar.gz"
