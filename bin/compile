@@ -111,7 +111,7 @@ topic "Fetch distribution of PredictionIO"
 curl -o "${dist_name}.tar.gz" -S "$url"
 mkdir -p "$dist_dir"
 echo "$dist_dir"
-ls -la
+ls -la "$dist_dir"
 tar -xz -f "${dist_name}.tar.gz" -C "$dist_dir" --strip-components=1 | indent
 ls -la
 topic "Fetch distribution of Spark"
@@ -135,6 +135,7 @@ topic "Configure PredictionIO"
 if [ -f "${custom_pio_env}" ]
 then
   echo "Using custom 'config/pio-env.sh'" | indent
+  ls -la "$dist_dir"
   cp "${custom_pio_env}" "${target_pio_env}" | indent
 else
   echo "Writing default 'pio-env.sh'" | indent
