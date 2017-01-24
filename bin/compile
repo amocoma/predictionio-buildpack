@@ -75,7 +75,7 @@ then
   echo "Using PredictionIO distribution at ${PREDICTIONIO_DIST_URL}" | indent
 elif [ $(requires_apache_predictionio "$BUILD_DIR/template.json") ]
 then
-  PIO_VERSION=0.10.0-incubating
+  PIO_VERSION=0.11.0-incubating
   echo "Using Apache PredictionIO ${PIO_VERSION}" | indent
 else
   mkdir -p "$BUILD_DIR/.heroku"
@@ -84,11 +84,11 @@ else
   echo "Using PredictionIO $PIO_VERSION" | indent
 fi
 
-PIO_BUILD=PredictionIO-${PIO_VERSION}
+PIO_BUILD=holox/PredictionIO-${PIO_VERSION}
 
 
 # PredictionIO dist tarball URL, expects `.tar.gz`
-default_url="https://marsikai.s3.amazonaws.com/${PIO_BUILD}.tar.gz"
+default_url="https://s3.eu-central-1.amazonaws.com/${PIO_BUILD}.tar.gz"
 url="${PREDICTIONIO_DIST_URL-$default_url}"
 
 # The PATH set in .profile.d/pio-env.sh must match.
